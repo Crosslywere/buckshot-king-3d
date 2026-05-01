@@ -11,7 +11,7 @@ import java.util.Set;
 import io.crosslywere.engine.core.component.Component;
 import io.crosslywere.engine.core.component.Transform;
 
-public class ChildEntity implements Entity {
+public abstract class ChildEntity implements Entity {
 
     private Entity parent = null;
     private final String name;
