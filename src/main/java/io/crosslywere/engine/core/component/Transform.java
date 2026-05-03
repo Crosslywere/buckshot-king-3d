@@ -53,6 +53,30 @@ public final class Transform implements Component {
         return rotation;
     }
 
+    public float getPitch() {
+        return rotation.x();
+    }
+
+    public void setPitch(float pitch) {
+        rotation.x = pitch;
+    }
+
+    public float getYaw() {
+        return rotation.y();
+    }
+
+    public void setYaw(float yaw) {
+        rotation.y = yaw;
+    }
+
+    public float getRoll() {
+        return rotation.z();
+    }
+
+    public void setRoll(float roll) {
+        rotation.z = roll;
+    }
+
     public Vector3f getRotation() {
         return getQuaternionRotation().getEulerAnglesXYZ(new Vector3f());
     }
