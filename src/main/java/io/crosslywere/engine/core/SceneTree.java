@@ -19,7 +19,8 @@ public final class SceneTree {
         if (activeScene != null)
             activeScene.onExit();
         if (sceneIndex >= scenes.size())
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Scene is out of bounds of index " + sceneIndex + " from scene size " + scenes.size());
         activeScene = scenes.stream().toList().get(sceneIndex);
         activeScene.onLoad();
     }
