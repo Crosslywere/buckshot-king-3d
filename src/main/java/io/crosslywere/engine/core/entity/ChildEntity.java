@@ -38,6 +38,7 @@ public abstract class ChildEntity implements Entity {
     protected void setParent(Entity entity) {
         if (parent == null) {
             this.parent = entity;
+            return;
         }
         throw new RuntimeException("Reparenting should not occur!");
     }
