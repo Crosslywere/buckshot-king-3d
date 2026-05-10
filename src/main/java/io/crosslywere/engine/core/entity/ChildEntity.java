@@ -13,7 +13,7 @@ import io.crosslywere.engine.core.component.Transform;
 
 public abstract class ChildEntity implements Entity {
 
-    private Entity parent = null;
+    private Scene parent = null;
     private final String name;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private final Set<ChildEntity> children = new HashSet<>();
@@ -31,23 +31,16 @@ public abstract class ChildEntity implements Entity {
         addComponent(transform);
     }
 
-    protected Entity getParent() {
+    protected Scene getParent() {
         return parent;
     }
 
-    protected void setParent(Entity entity) {
+    protected void setParent(Scene entity) {
         if (parent == null) {
             this.parent = entity;
             return;
         }
         throw new RuntimeException("Reparenting should not occur!");
-    }
-
-    public String getSceneName() {
-        if (parent != null)
-            if (parent instanceof ChildEntity p)
-                return p.getSceneName() + "." + getName();
-        return getName();
     }
 
     public String getName() {
@@ -56,11 +49,7 @@ public abstract class ChildEntity implements Entity {
 
     public void addChild(ChildEntity child) {
         if (child == this)
-            throw new RuntimeException("Cannot make a child entity of self " + getSceneName());
-        if (child.parent != null)
-            throw new RuntimeException(
-                    "Child `" + child.getSceneName() + "` cannot be reparented to `" + getSceneName() + "`");
-        child.setParent(this);
+            throw new RuntimeException("Cannot make a child entity of self " + getName());
         children.add(child);
     }
 
@@ -87,13 +76,6 @@ public abstract class ChildEntity implements Entity {
 
     public boolean hasComponent(Class<? extends Component> componentClass) {
         return components.containsKey(componentClass);
-    }
-
-    public boolean parentHasComponent(Class<? extends Component> componentClass) {
-        if (parent instanceof ChildEntity p) {
-            return p.hasComponent(componentClass);
-        }
-        return false;
     }
 
     @Override
@@ -167,6 +149,14 @@ public abstract class ChildEntity implements Entity {
         } else if (!name.equals(other.name))
             return false;
         return true;
+    }
+
+    public static interface LoadCallback {
+        void load(Entity self);
+    }
+
+    public static interface UpdateCallback {
+        void update(Entity self, float timeDelta);
     }
 
 }

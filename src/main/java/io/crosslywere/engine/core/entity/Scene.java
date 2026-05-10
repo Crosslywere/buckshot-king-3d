@@ -7,16 +7,29 @@ import java.util.List;
 public final class Scene implements Entity {
 
     private final String name;
+    private Camera sceneCamera = null;
     private final List<ChildEntity> children = new ArrayList<>();
 
     public Scene(String name) {
         this.name = name;
     }
 
+    public Camera getSceneCamera() {
+        if (sceneCamera == null)
+            setSceneCamera(new Camera());
+        return sceneCamera;
+    }
+
+    public void setSceneCamera(Camera camera) {
+        if (children.contains(camera))
+            sceneCamera = Camera.class.cast(children.indexOf(camera));
+        children.add(camera);
+        sceneCamera = camera;
+    }
+
     @Override
     public void addChild(ChildEntity entity) {
         children.add(entity);
-        entity.setParent(this);
     }
 
     @Override

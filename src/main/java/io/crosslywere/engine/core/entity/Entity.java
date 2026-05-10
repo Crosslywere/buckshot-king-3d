@@ -31,12 +31,4 @@ public interface Entity {
         getChildren().forEach(ChildEntity::onExit);
     }
 
-    public static interface LoadCallback {
-        void load(Entity self);
-    }
-
-    public static interface UpdateCallback {
-        void update(Entity self, float timeDelta);
-    }
-
 }
