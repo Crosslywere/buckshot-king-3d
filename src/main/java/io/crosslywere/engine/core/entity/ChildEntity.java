@@ -3,10 +3,8 @@ package io.crosslywere.engine.core.entity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import io.crosslywere.engine.core.component.Component;
 import io.crosslywere.engine.core.component.Transform;
@@ -16,7 +14,6 @@ public abstract class ChildEntity implements Entity {
     private Scene parent = null;
     private final String name;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
-    private final Set<ChildEntity> children = new HashSet<>();
     private boolean loaded = false;
     private LoadCallback loadCallback = null;
     private UpdateCallback updateCallback = null;
@@ -48,18 +45,18 @@ public abstract class ChildEntity implements Entity {
     }
 
     public void addChild(ChildEntity child) {
-        if (child == this)
-            throw new RuntimeException("Cannot make a child entity of self " + getName());
-        children.add(child);
+        throw new RuntimeException("Child entity cannot have children");
     }
 
     public Collection<ChildEntity> getChildren() {
-        return children;
+        throw new RuntimeException("Child entity cannot have children");
     }
 
     public void addComponent(Component component) {
         if (!loaded)
             components.put(component.getClass(), component);
+        else
+            throw new RuntimeException("Cannot add component to a loaded entity");
     }
 
     public void addComponents(Component... components) {
@@ -84,7 +81,6 @@ public abstract class ChildEntity implements Entity {
             throw new RuntimeException("Cannot load a loaded entity " + name);
         if (loadCallback != null)
             loadCallback.load(this);
-        Entity.super.onLoad();
         loaded = true;
     }
 
@@ -94,7 +90,6 @@ public abstract class ChildEntity implements Entity {
             onLoad();
         if (updateCallback != null)
             updateCallback.update(this, deltaTime);
-        Entity.super.onUpdate(deltaTime);
     }
 
     public void onExit() {
@@ -102,7 +97,6 @@ public abstract class ChildEntity implements Entity {
             throw new RuntimeException("Cannot unload an unloaded entity " + name);
         if (unloadCallback != null)
             unloadCallback.load(this);
-        Entity.super.onExit();
         loaded = false;
     }
 
