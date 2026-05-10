@@ -100,7 +100,8 @@ public abstract class ChildEntity implements Entity {
     public void onExit() {
         if (!loaded)
             throw new RuntimeException("Cannot unload an unloaded entity " + name);
-        unloadCallback.load(this);
+        if (unloadCallback != null)
+            unloadCallback.load(this);
         Entity.super.onExit();
         loaded = false;
     }
