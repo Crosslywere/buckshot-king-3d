@@ -24,7 +24,7 @@ public class BuckshotKing extends Game {
     }
 
     private Scene game() {
-        var game = new Scene("mfme");
+        var game = new Scene("game");
         return game;
     }
 
