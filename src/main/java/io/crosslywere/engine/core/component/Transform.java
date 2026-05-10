@@ -49,8 +49,8 @@ public final class Transform implements Component {
         this.position = position;
     }
 
-    public Vector3f getRotationRaw() {
-        return rotation;
+    public void addPosition(Vector3f offset) {
+        position.add(offset);
     }
 
     public float getPitch() {
@@ -61,6 +61,10 @@ public final class Transform implements Component {
         rotation.x = pitch;
     }
 
+    public void addPitch(float offset) {
+        rotation.x += offset;
+    }
+
     public float getYaw() {
         return rotation.y();
     }
@@ -69,12 +73,20 @@ public final class Transform implements Component {
         rotation.y = yaw;
     }
 
+    public void addYaw(float offset) {
+        rotation.y += offset;
+    }
+
     public float getRoll() {
         return rotation.z();
     }
 
     public void setRoll(float roll) {
         rotation.z = roll;
+    }
+
+    public void addRoll(float offset) {
+        rotation.z += offset;
     }
 
     public Vector3f getRotation() {
@@ -103,10 +115,10 @@ public final class Transform implements Component {
         return model;
     }
 
-    private Quaternionf getQuaternionRotation() {
-        var pitch = (float) Math.toRadians(rotation.x);
-        var yaw = (float) Math.toRadians(rotation.y);
-        var roll = (float) Math.toRadians(rotation.z);
+    public Quaternionf getQuaternionRotation() {
+        var pitch = rotation.x();
+        var yaw = rotation.y();
+        var roll = rotation.z();
         return new Quaternionf().rotateXYZ(pitch, yaw, roll);
     }
 
